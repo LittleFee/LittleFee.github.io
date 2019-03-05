@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何在cPanel中把主域名绑定到public_html的子目录 | 清渭</title>
+<link rel="shortcut icon" href="https://LittleFee.github.io/favicon.ico">
+<link rel="stylesheet" href="https://LittleFee.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://LittleFee.github.io">
+  <img class="avatar" src="https://LittleFee.github.io/images/avatar.png" alt="" width="80px" height="80px">
+  </a>
+  <h1 class="site-title">
+    清渭
+  </h1>
+  <p class="site-description">
+    自留地
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+</div>
+
+      
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              如何在cPanel中把主域名绑定到public_html的子目录
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-11-20 ·
+              </time>
+              
+                <a href="https://LittleFee.github.io/tag/aq6nC4SHw" class="post-tags">
+                  # 记录
+                </a>
+              
+            </div>
+            <div class="post-content">
+              <p>最近在搞一台Namecheap的主机，管理用的是cPanel面板。在绑定域名和安装wordpress的过程发现主域名默认是绑定到public_html这个目录下的，也就是如果用主域名的话网站文件默认会直接放到这个文件夹的根目录。考虑到后续还可能增加一些新的网站，新的域名倒是可以绑定到public_html的子目录，但是这样的话主域名的文件夹就和别的域名的文件夹处于同一级别，就很难清晰的去管理，因此需要把主域名也绑定到public_html的子目录。这里我们利用了.htaccess 重写来实现这个目的。</p>
+<p>首先，在public_html文件夹下建立一个文件夹，这里以本站域名为例，建立一个 qingwei.tech 的文件夹</p>
+<p>.htaccess文件的写法如下：</p>
+<pre><code># 开始.htaccess重写主域名
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^(www.)?qingwei.tech$
+# 这里的 qingwei.tech 是指public_html下创建一个 qingwei.tech 文件夹
+# 主域名就绑定到这个文件夹，当然也可以用别的名字
+RewriteCond %{REQUEST_URI} !^/qingwei.tech/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# 设置重写规则
+RewriteRule ^(.*)$ /qingwei.tech/$1
+RewriteCond %{HTTP_HOST} ^(www.)?qingwei.tech$
+RewriteRule ^(/)?$ qingwei.tech/index.php [L]
+# 这里的index.php也可以是index.html等其它的主页文件</code></pre><p>ps:里面的域名需要换成你自己的域名，同时文件夹名字也可以自由修改</p>
+<p>然后，把这个.htaccess文件放到public_html 根目录下即可。</p>
+<p>当然为了区分不同的域名，你也可以将主域名依然是绑定在/public_html，其它域名例如example.com，可以在你添加“附加域”的时候，绑定到/example.com，以达到区分不同网站的目的。只是这样不符合强迫症患者们的要求。</p>
+<p>当然，用其他面板（例如宝塔？）的我就不是很清楚了。</p>
+
+            </div>
+          </article>
+        </div>
+    
+        
+
+        
+    
+        <div class="site-footer">
+  Powered by Hve Notes
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
